@@ -2,30 +2,11 @@
 
 ## 📚 **Complete Guide: Creating AI Agents with MCP - Model Context Protocol**
 
-
-Create AI Agents with Model Context Protocol (MCP)
-O'Reilly Live Training Course Repository
-
 <p align="center">
   <a href="https://leanpub.com/mcp">
     <img src="https://d2sofvawe08yqg.cloudfront.net/mcp/s_hero2x?1751786175" alt="MCP book" width="300">
   </a>
 </p>
-
-
-🎓 O'Reilly Live Training Course
-Instructor: Bruce Hopkins
-</div>
-📖 About This Repository
-This repository contains all the code examples, exercises, and materials for the O'Reilly Live Training course "Create AI Agents with Model Context Protocol (MCP)". The course provides hands-on experience building AI agents that leverage the MCP protocol to connect with external tools and data sources.
-🚀 What You'll Learn
-
-MCP Fundamentals: Understanding the Model Context Protocol architecture and its role in AI agent development
-Building MCP Servers: Creating servers that expose tools, resources, prompts, and sampling capabilities
-MCP Client Development: Implementing clients using various SDKs (Python, Java, Node.js)
-AI Agent Integration: Connecting MCP with popular AI platforms (Claude Desktop, Cursor, VS Code)
-Production Best Practices: Security, performance optimization, and deployment strategies
-Real-World Applications: Building practical agents for data analysis, automation, and tool integration
 
 **Get the comprehensive book that goes beyond this course!**
 
