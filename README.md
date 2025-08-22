@@ -8,13 +8,10 @@ O'Reilly Live Training Course Repository
 
 <p align="center">
   <a href="https://leanpub.com/mcp">
-    <img src="https://d2sofvawe08yqg.cloudfront.net/mcp/s_hero2x?1751786175" alt="MCP book" width="200">
+    <img src="https://d2sofvawe08yqg.cloudfront.net/mcp/s_hero2x?1751786175" alt="MCP book" width="300">
   </a>
 </p>
 
-![Cover image](book.png)
-📚 Get the Book: Creating AI Agents with MCP
-The Only Book You'll Need on Model Context Protocol
 
 🎓 O'Reilly Live Training Course
 Instructor: Bruce Hopkins
