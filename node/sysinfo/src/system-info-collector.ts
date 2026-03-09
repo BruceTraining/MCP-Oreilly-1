@@ -10,9 +10,6 @@
  *   2. This module only deals with data collection and formatting —
  *      calling OS-level APIs and assembling human-readable output.
  *
- * This mirrors the pattern used in the smart-home MCP template where
- * matter-controller.ts owns all Matter protocol logic and index.ts owns
- * all MCP logic.
  *
  * The main export is `getSystemInformation()`, which collects all data in
  * a single call and returns a result object with either a formatted string
@@ -30,8 +27,7 @@ import si from "systeminformation";
 /**
  * Result type returned by getSystemInformation().
  *
- * Follows the same success/error pattern as the smart-home template's
- * controller functions, making it easy for the MCP tool handler to
+ * Follows the same success/error pattern making it easy for the MCP tool handler to
  * branch on `success`.
  */
 export interface SystemInfoResult {
