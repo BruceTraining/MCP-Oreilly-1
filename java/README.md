@@ -1,4 +1,4 @@
-# Weather MCP Server (Java SDK 2.0)
+# Weather MCP Server (Java MCP SDK 2.0)
 
 A Model Context Protocol server that provides weather information, built with
 the official [MCP Java SDK](https://github.com/modelcontextprotocol/java-sdk)
