@@ -63,7 +63,6 @@ Restart Claude Desktop and ask about the weather in any city.
 
 ```
 ├── pom.xml                  Maven build (SDK 2.0 BOM, shade plugin for fat jar)
-├── tutorial.md              Full code walkthrough + migration guide + Spring AI appendix
 └── src/main/java/com/example/weather/
     └── WeatherMcpServer.java   The entire server (single class, fully documented)
 ```
