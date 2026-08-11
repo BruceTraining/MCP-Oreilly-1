@@ -1,56 +1,80 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
          http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.example</groupId>
     <artifactId>weather-mcp-server</artifactId>
-    <version>1.0.0</version>
+    <version>2.0.0</version>
 
     <properties>
+        <!-- The MCP Java SDK requires Java 17 or later. -->
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <mcp.sdk.version>2.0.0</mcp.sdk.version>
     </properties>
 
-    <repositories>
-        <repository>
-            <id>central</id>
-            <name>Maven Central</name>
-            <url>https://repo1.maven.org/maven2</url>
-        </repository>
-    </repositories>
+    <dependencyManagement>
+        <dependencies>
+            <!--
+                The MCP "Bill of Materials" (BOM) pins every SDK module to the
+                same version, so individual <dependency> entries below don't
+                need (and shouldn't have) their own <version> tags.
+            -->
+            <dependency>
+                <groupId>io.modelcontextprotocol.sdk</groupId>
+                <artifactId>mcp-bom</artifactId>
+                <version>${mcp.sdk.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
     <dependencies>
-        <!-- Jackson for JSON processing -->
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-databind</artifactId>
-            <version>2.15.2</version>
-        </dependency>
+        <!--
+            MCP Java SDK (aggregator artifact).
 
-        <!-- MCP Java SDK -->
+            As of SDK 1.0, "mcp" bundles mcp-core plus a Jackson 3 based JSON
+            mapper. Unlike the 0.x SDK, we no longer declare our own
+            jackson-databind dependency or construct an ObjectMapper; the
+            SDK owns JSON serialization via its McpJsonMapper abstraction.
+
+            (If a project must stay on Jackson 2, depend on "mcp-core" +
+            "mcp-json-jackson2" instead of "mcp".)
+        -->
         <dependency>
             <groupId>io.modelcontextprotocol.sdk</groupId>
             <artifactId>mcp</artifactId>
-            <version>0.10.0</version>
         </dependency>
 
+        <!--
+            SLF4J simple binding: routes the SDK's log output to stderr.
+            IMPORTANT for STDIO servers: stdout is reserved for JSON-RPC
+            protocol messages, so all logging must go to stderr. The simple
+            binding does this by default.
+        -->
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-simple</artifactId>
-            <version>2.0.9</version>
+            <version>2.0.17</version>
         </dependency>
     </dependencies>
 
     <build>
         <plugins>
+            <!--
+                Shade plugin: packages the server and all its dependencies
+                into a single runnable "fat jar", which is the easiest thing
+                to point Claude Desktop at (one `java -jar ...` command).
+            -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
-                <version>3.5.1</version>
+                <version>3.6.0</version>
                 <executions>
                     <execution>
                         <phase>package</phase>
