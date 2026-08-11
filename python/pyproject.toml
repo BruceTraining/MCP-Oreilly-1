@@ -1,10 +1,10 @@
 [build-system]
-requires = ["hatchling"]
+requires = ["hatchling>=1.27.0,<2"]
 build-backend = "hatchling.build"
 
 [project]
 name = "weather_mcp_python"
-version = "0.1.0"
+version = "0.2.0"
 description = "Weather MCP Server - A Model Context Protocol server that provides weather information"
 readme = "README.md"
 requires-python = ">=3.10"
@@ -12,7 +12,11 @@ authors = [
     {name = "Your Name", email = "your.email@example.com"},
 ]
 dependencies = [
-    "mcp[cli]>=1.0.0",
+    # Floor is a security floor, not a feature floor: it stays at or above
+    # 1.28.1, the first 1.x release clear of CVE-2025-66416, CVE-2026-52869
+    # and CVE-2026-59950.
+    # Capped below 2.0, which changes the FastMCP API this server is built on.
+    "mcp[cli]>=1.29.0,<2",
 ]
 
 [project.scripts]

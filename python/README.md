@@ -38,12 +38,14 @@ A Model Context Protocol (MCP) server that provides weather information using Fa
 
 4. **Install dependencies**:
    ```bash
-   # Install MCP with CLI extras (provides the 'mcp' command)
-   uv add "mcp[cli]"
-   
-   # Install in development mode
-   uv pip install -e .
+   uv sync
    ```
+
+   This installs the exact versions from `uv.lock`, including `mcp[cli]`
+   (the CLI extra provides the `mcp` command used below). Prefer `uv sync`
+   over `uv add "mcp[cli]"` — `uv add` rewrites the dependency with a bare
+   `>=` constraint and drops the security floor pinned in `pyproject.toml`
+   (see [Dependency security](#dependency-security)).
 
 5. **Verify installation**:
    ```bash
@@ -72,8 +74,9 @@ uv run weather-mcp
 ### VS Code
 
 1. Open the project in VS Code
-2. Use F5 to run with the "Run Weather MCP Server" configuration
-3. Or use Ctrl+Shift+P → "Python: Run Python File in Terminal"
+2. Use Ctrl+Shift+P → "Python: Run Python File in Terminal"
+3. To run with F5, add a `.vscode/launch.json` debug configuration that runs
+   the `weather_mcp.server` module (the repo does not ship one)
 
 ## Testing with MCP Inspector
 
@@ -136,16 +139,42 @@ Generates prompts for travel weather advice.
 ```
 weather_mcp_python/
 ├── pyproject.toml
+├── uv.lock
 ├── weather_mcp/
 │   ├── __init__.py
 │   └── server.py
-├── .vscode/
-│   └── launch.json
 └── README.md
+```
+
+## Dependency security
+
+`pyproject.toml` pins `mcp[cli]>=1.29.0,<2`. Both ends of that range matter:
+
+- **The floor is a security floor, not a feature floor.** Releases below it
+  carry published advisories against the MCP Python SDK — CVE-2025-53366
+  (FastMCP validation error → DoS, fixed in 1.9.4), CVE-2025-53365 (fixed in
+  1.10.0), CVE-2025-66416 (DNS rebinding protection off by default, fixed in
+  1.23.0), CVE-2026-52869 (fixed in 1.27.2) and CVE-2026-59950 (fixed in
+  1.28.1). This server speaks STDIO only, so the transport-layer ones are not
+  reachable as written, but the floor keeps a future HTTP transport from
+  silently inheriting them.
+- **The `<2` cap** keeps resolution on the 1.x FastMCP API this server is
+  built on; `mcp` 2.0 is a breaking change.
+
+Avoid replacing these with a bare `>=`: an unbounded floor lets a fresh
+resolve or a lock-free `pip install .` pull a version with known advisories,
+and an unbounded ceiling pulls the incompatible 2.x line. The build backend
+(`hatchling>=1.27.0,<2`) is bounded for the same reason — it executes at
+build time.
+
+To re-check the locked tree against the OSV database:
+
+```bash
+uvx pip-audit
 ```
 
 ## Notes
 
-- Currently returns hardcoded weather data (45°F, Clear conditions)
+- Currently returns hardcoded weather data (89°F, Clear conditions)
 - Real weather API integration planned for future versions
 - Logging output goes to stderr to avoid interfering with MCP STDIO communication
