@@ -4,9 +4,7 @@ A Model Context Protocol server that provides weather information, built with
 the official [MCP Java SDK](https://github.com/modelcontextprotocol/java-sdk)
 **2.0.0** — plain Java, no application framework.
 
-This is the SDK 2.0 rewrite of the original 0.10.0-based server. For a full
-walkthrough of the code, the protocol, and the 0.x → 2.0 migration, see
-**[tutorial.md](tutorial.md)**.
+This is the SDK 2.0 rewrite of the original 0.10.0-based server. 
 
 ## What it provides
 
